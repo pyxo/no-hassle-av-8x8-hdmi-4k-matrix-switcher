@@ -10,7 +10,7 @@
   "iot_class": "assumed_state",
   "issue_tracker": "https://github.com/pyxo/no-hassle-av-8x8-hdmi-4k-matrix-switcher/issues",
   "requirements": [
-    "serialx==1.11.0"
+    "serialx>=1.11.0"
   ],
   "version": "0.1.0"
 }
