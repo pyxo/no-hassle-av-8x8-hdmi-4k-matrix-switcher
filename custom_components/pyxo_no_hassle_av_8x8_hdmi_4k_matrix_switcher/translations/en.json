@@ -1,0 +1,94 @@
+{
+  "title": "Pyxo No Hassle A/V 8x8 HDMI 4K Matrix Switcher",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect a matrix",
+        "description": "Choose UDP with an IP address or hostname, or a local serial port at 115200 8N1. Only fields for the chosen connection are used. Setup does not connect to or test the matrix. Serial carriage return is optional; UDP never appends a newline.",
+        "data": {
+          "name": "Matrix name",
+          "connection": "Connection type (udp or serial)",
+          "host": "IP address or hostname (UDP only)",
+          "port": "UDP port",
+          "serial_path": "Serial device path (serial only)",
+          "append_cr": "Append carriage return (serial only)"
+        }
+      },
+      "labels": {
+        "title": "Input and output names",
+        "description": "Name all eight physical inputs and outputs. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
+        "data": {
+          "input_1": "Input 1 label",
+          "input_2": "Input 2 label",
+          "input_3": "Input 3 label",
+          "input_4": "Input 4 label",
+          "input_5": "Input 5 label",
+          "input_6": "Input 6 label",
+          "input_7": "Input 7 label",
+          "input_8": "Input 8 label",
+          "output_1": "Output 1 label",
+          "output_2": "Output 2 label",
+          "output_3": "Output 3 label",
+          "output_4": "Output 4 label",
+          "output_5": "Output 5 label",
+          "output_6": "Output 6 label",
+          "output_7": "Output 7 label",
+          "output_8": "Output 8 label",
+          "show_reboot": "Enable reboot button"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure matrix",
+        "description": "Choose UDP with an IP address or hostname, or a local serial port at 115200 8N1. Only fields for the chosen connection are used. Setup does not connect to or test the matrix. Serial carriage return is optional; UDP never appends a newline.",
+        "data": {
+          "name": "Matrix name",
+          "connection": "Connection type (udp or serial)",
+          "host": "IP address or hostname (UDP only)",
+          "port": "UDP port",
+          "serial_path": "Serial device path (serial only)",
+          "append_cr": "Append carriage return (serial only)"
+        }
+      }
+    },
+    "error": {
+      "invalid_connection": "Enter a name and valid connection settings. UDP requires an IP address or hostname and port 1\u201365535. Serial requires a local /dev/... or COM port.",
+      "invalid_labels": "Use non-empty labels of at most 100 characters. Each input label must be unique within the matrix.",
+      "already_configured": "This endpoint is already configured."
+    },
+    "abort": {
+      "already_configured": "This endpoint is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Input and output names",
+        "description": "Name all eight physical inputs and outputs. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
+        "data": {
+          "input_1": "Input 1 label",
+          "input_2": "Input 2 label",
+          "input_3": "Input 3 label",
+          "input_4": "Input 4 label",
+          "input_5": "Input 5 label",
+          "input_6": "Input 6 label",
+          "input_7": "Input 7 label",
+          "input_8": "Input 8 label",
+          "output_1": "Output 1 label",
+          "output_2": "Output 2 label",
+          "output_3": "Output 3 label",
+          "output_4": "Output 4 label",
+          "output_5": "Output 5 label",
+          "output_6": "Output 6 label",
+          "output_7": "Output 7 label",
+          "output_8": "Output 8 label",
+          "show_reboot": "Enable reboot button"
+        }
+      }
+    },
+    "error": {
+      "invalid_connection": "Enter a name and valid connection settings. UDP requires an IP address or hostname and port 1\u201365535. Serial requires a local /dev/... or COM port.",
+      "invalid_labels": "Use non-empty labels of at most 100 characters. Each input label must be unique within the matrix.",
+      "already_configured": "This endpoint is already configured."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "domain": "pyxo_no_hassle_av_8x8_hdmi_4k_matrix_switcher",
+  "name": "Pyxo No Hassle A/V 8x8 HDMI 4K Matrix Switcher",
+  "codeowners": [
+    "@pyxo"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/pyxo/no-hassle-av-8x8-hdmi-4k-matrix-switcher",
+  "integration_type": "hub",
+  "iot_class": "assumed_state",
+  "issue_tracker": "https://github.com/pyxo/no-hassle-av-8x8-hdmi-4k-matrix-switcher/issues",
+  "requirements": [
+    "serialx==1.11.0"
+  ],
+  "version": "0.1.0"
+}
