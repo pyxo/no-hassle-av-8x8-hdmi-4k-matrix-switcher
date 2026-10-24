@@ -5,12 +5,14 @@ from typing import Any
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
+from homeassistant.helpers import selector
 
 from .const import APPEND_CR, CONNECTION, DOMAIN, INPUT_KEYS, OUTPUT_KEYS, SERIAL_PATH, SHOW_REBOOT
 from .model import connection_data, endpoint, labels
+from .serial_identity import async_preferred_serial_path, async_serial_choices
 
 
-def connection_schema(values: dict[str, Any]) -> vol.Schema:
+def connection_schema(values: dict[str, Any], serial_choices: list[dict[str, str]]) -> vol.Schema:
     """Both connection fields remain visible so transport can be changed later."""
     return vol.Schema(
         {
@@ -22,7 +24,13 @@ def connection_schema(values: dict[str, Any]) -> vol.Schema:
             vol.Optional("port", default=values.get("port", 5000)): vol.All(
                 int, vol.Range(min=1, max=65535)
             ),
-            vol.Optional(SERIAL_PATH, default=values.get(SERIAL_PATH, "")): str,
+            vol.Optional(SERIAL_PATH, default=values.get(SERIAL_PATH, "")): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=serial_choices,
+                    custom_value=True,
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )
+            ),
             vol.Optional(APPEND_CR, default=values.get(APPEND_CR, False)): bool,
         }
     )
@@ -45,6 +53,19 @@ class PyxoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def async_get_options_flow(config_entry):
         return PyxoOptionsFlow()
 
+    async def _async_connection_data(self, user_input):
+        data = connection_data(user_input)
+        if data[CONNECTION] == "serial":
+            data[SERIAL_PATH] = await async_preferred_serial_path(self.hass, data[SERIAL_PATH])
+        return data
+
+    async def _async_connection_schema(self, values):
+        choices = await async_serial_choices(self.hass)
+        current = values.get(SERIAL_PATH)
+        if current and current not in {choice["value"] for choice in choices}:
+            choices.append({"value": current, "label": current})
+        return connection_schema(values, choices)
+
     def _duplicate(self, data, exclude=None):
         return any(
             entry.entry_id != exclude and endpoint(dict(entry.data)) == endpoint(data)
@@ -55,7 +76,7 @@ class PyxoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             try:
-                data = connection_data(user_input)
+                data = await self._async_connection_data(user_input)
             except ValueError:
                 errors["base"] = "invalid_connection"
             else:
@@ -64,7 +85,9 @@ class PyxoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._connection_data = data
                 return await self.async_step_labels()
         return self.async_show_form(
-            step_id="user", data_schema=connection_schema(user_input or {}), errors=errors
+            step_id="user",
+            data_schema=await self._async_connection_schema(user_input or {}),
+            errors=errors,
         )
 
     async def async_step_labels(self, user_input=None):
@@ -91,7 +114,7 @@ class PyxoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             try:
-                data = connection_data(user_input)
+                data = await self._async_connection_data(user_input)
             except ValueError:
                 errors["base"] = "invalid_connection"
             else:
@@ -101,7 +124,7 @@ class PyxoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     return self.async_update_reload_and_abort(entry, title=data["name"], data=data)
         return self.async_show_form(
             step_id="reconfigure",
-            data_schema=connection_schema(user_input or dict(entry.data)),
+            data_schema=await self._async_connection_schema(user_input or dict(entry.data)),
             errors=errors,
         )
 

@@ -11,7 +11,8 @@ from custom_components.pyxo_no_hassle_av_8x8_hdmi_4k_matrix_switcher.model impor
 
 @pytest.fixture(autouse=True)
 def custom_integrations(enable_custom_integrations):
-    yield
+    with patch("serialx.async_list_serial_ports", new_callable=AsyncMock, return_value=[]):
+        yield
 
 
 @pytest.fixture

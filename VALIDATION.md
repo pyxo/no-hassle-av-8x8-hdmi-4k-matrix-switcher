@@ -10,13 +10,14 @@ The source contains no route/status/firmware query or response specification. No
 
 ## Verified by automated tests
 
-- 124 pytest cases passed on Python 3.14.8 with Home Assistant 2026.10.0 and pytest-homeassistant-custom-component 0.13.371.
+- 128 pytest cases passed on Python 3.14.8 with Home Assistant 2026.10.0 and pytest-homeassistant-custom-component 0.13.371.
 - All 64 route combinations use the correct bytes, including physical output 5. No physical route uses all-output address `04`; no UDP newline is appended.
 - Port/index/host validation; normalized hostnames and IPv6; DNS failure, empty resolution, actual timeout, send errors, and cancellation cleanup.
 - Serial transport's exact baud/data/parity/stop-bit arguments, route/reboot bytes, explicit optional CR, errors, cancellation cleanup, and local-path validation.
 - Real HA config/options/reconfigure flow manager, label persistence and validation, multiple UDP/serial entries, duplicate endpoint protection and stable entry identity.
 - Eight real SelectEntities per entry, native select actions, physical numbering, correct device/entity registry identities, optional reboot, failure-to-unknown behavior, and independent matrix state.
 - HA restore-state serialization in the storage test fixture and simulated shutdown/restart followed by integration reload: the numeric input is restored with a changed label and no hardware replay. Invalid restored values stay unknown. Reboot clears the values that will be saved.
+- Persistent-serial tests verify by-id preference over by-path, raw-to-persistent conversion in the setup flow, alias duplicate prevention, missing-adapter behavior, and simulated ttyUSB0 → ttyUSB1 reassignment without changing the stored link.
 - Concurrency tests show per-output ordering, independent output routing and reboot waiting for active routes.
 - Ruff lint and format checks passed.
 
