@@ -40,7 +40,9 @@ def labels_schema(values: dict[str, Any]) -> vol.Schema:
     fields = {}
     for keys, prefix in ((INPUT_KEYS, "Input"), (OUTPUT_KEYS, "Output")):
         for i, key in enumerate(keys, 1):
-            fields[vol.Required(key, default=values.get(key, f"{prefix} {i}"))] = str
+            fields[
+                vol.Optional(key, description={"suggested_value": values.get(key, f"{prefix} {i}")})
+            ] = str
     fields[vol.Required(SHOW_REBOOT, default=values.get(SHOW_REBOOT, False))] = bool
     return vol.Schema(fields)
 

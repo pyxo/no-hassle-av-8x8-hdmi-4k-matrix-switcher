@@ -16,7 +16,7 @@
       },
       "labels": {
         "title": "Input and output names",
-        "description": "Name all eight physical inputs and outputs. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
+        "description": "Optionally name any physical inputs and outputs. Leave fields blank to use Input 1\u20138 and Output 1\u20138 defaults. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
         "data": {
           "input_1": "Input 1 label",
           "input_2": "Input 2 label",
@@ -52,7 +52,7 @@
     },
     "error": {
       "invalid_connection": "Enter a name and valid connection settings. UDP requires an IP address or hostname and port 1\u201365535. Serial requires a local /dev/... or COM port.",
-      "invalid_labels": "Use non-empty labels of at most 100 characters. Each input label must be unique within the matrix.",
+      "invalid_labels": "Names must be at most 100 characters, and input names must be unique within the matrix. Leave unused names blank to use Input 1\u20138 or Output 1\u20138 defaults.",
       "already_configured": "This endpoint is already configured."
     },
     "abort": {
@@ -63,7 +63,7 @@
     "step": {
       "init": {
         "title": "Input and output names",
-        "description": "Name all eight physical inputs and outputs. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
+        "description": "Optionally name any physical inputs and outputs. Leave fields blank to use Input 1\u20138 and Output 1\u20138 defaults. Labels can be changed later. Routing state is assumed, saved locally, and restored after Home Assistant restarts. There is no hardware readback. Reboot is optional and disruptive.",
         "data": {
           "input_1": "Input 1 label",
           "input_2": "Input 2 label",
@@ -87,7 +87,7 @@
     },
     "error": {
       "invalid_connection": "Enter a name and valid connection settings. UDP requires an IP address or hostname and port 1\u201365535. Serial requires a local /dev/... or COM port.",
-      "invalid_labels": "Use non-empty labels of at most 100 characters. Each input label must be unique within the matrix.",
+      "invalid_labels": "Names must be at most 100 characters, and input names must be unique within the matrix. Leave unused names blank to use Input 1\u20138 or Output 1\u20138 defaults.",
       "already_configured": "This endpoint is already configured."
     }
   }

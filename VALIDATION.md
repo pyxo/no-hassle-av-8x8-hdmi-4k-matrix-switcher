@@ -1,6 +1,6 @@
 # Validation record
 
-Date: October 24, 2026. Version: 0.1.0.
+Date: October 24, 2026. Version: 0.1.1.
 
 ## Verified against the actual uploaded file
 
@@ -10,10 +10,11 @@ The source contains no route/status/firmware query or response specification. No
 
 ## Verified by automated tests
 
-- 128 pytest cases passed on Python 3.14.8 with Home Assistant 2026.10.0 and pytest-homeassistant-custom-component 0.13.371.
+- 131 pytest cases passed on Python 3.14.8 with Home Assistant 2026.10.0 and pytest-homeassistant-custom-component 0.13.371.
 - All 64 route combinations use the correct bytes, including physical output 5. No physical route uses all-output address `04`; no UDP newline is appended.
 - Port/index/host validation; normalized hostnames and IPv6; DNS failure, empty resolution, actual timeout, send errors, and cancellation cleanup.
 - Serial transport's exact baud/data/parity/stop-bit arguments, route/reboot bytes, explicit optional CR, errors, cancellation cleanup, and local-path validation.
+- Partial-name regression tests verify blank, whitespace-only and omitted names use physical-port defaults in setup and options; clearing existing names resets defaults, while duplicate custom input names are still rejected.
 - Real HA config/options/reconfigure flow manager, label persistence and validation, multiple UDP/serial entries, duplicate endpoint protection and stable entry identity.
 - Eight real SelectEntities per entry, native select actions, physical numbering, correct device/entity registry identities, optional reboot, failure-to-unknown behavior, and independent matrix state.
 - HA restore-state serialization in the storage test fixture and simulated shutdown/restart followed by integration reload: the numeric input is restored with a changed label and no hardware replay. Invalid restored values stay unknown. Reboot clears the values that will be saved.

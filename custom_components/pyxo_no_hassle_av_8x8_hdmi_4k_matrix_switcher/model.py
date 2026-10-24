@@ -21,9 +21,9 @@ def labels(values: dict[str, Any]) -> dict[str, Any]:
     for keys, prefix in ((INPUT_KEYS, "Input"), (OUTPUT_KEYS, "Output")):
         for i, key in enumerate(keys, 1):
             value = values.get(key, f"{prefix} {i}")
-            if not isinstance(value, str) or not value.strip() or len(value.strip()) > 100:
+            if not isinstance(value, str) or len(value.strip()) > 100:
                 raise ValueError("Labels must contain 1–100 characters")
-            result[key] = value.strip()
+            result[key] = value.strip() or f"{prefix} {i}"
     if len({result[key].casefold() for key in INPUT_KEYS}) != 8:
         raise ValueError("Input labels must be unique within each matrix")
     result[SHOW_REBOOT] = values.get(SHOW_REBOOT, False)

@@ -4,7 +4,7 @@
 
 A standalone, local Home Assistant custom integration for the No Hassle A/V 8×8 HDMI matrix protocol. Each matrix becomes one device with eight native `select` entities. Configure multiple matrices independently, over network UDP or a local RS232 serial port. No YAML, shell commands, cloud accounts, or cloud services are used by the integration.
 
-**Development MVP, version 0.1.0.** Tested in Home Assistant 2026.10.0 with mocked hardware. No live matrix or serial adapter has been tested. The target device is the No Hassle A/V 8x8 HDMI 4K Matrix Switcher; physical unit/firmware compatibility remains untested. Only devices matching the supplied command reference are supported. See [validation](VALIDATION.md).
+**Development MVP, version 0.1.1.** Tested in Home Assistant 2026.10.0 with mocked hardware. No live matrix or serial adapter has been tested. The target device is the No Hassle A/V 8x8 HDMI 4K Matrix Switcher; physical unit/firmware compatibility remains untested. Only devices matching the supplied command reference are supported. See [validation](VALIDATION.md).
 
 Product: [No Hassle A/V — 8x8 HDMI 4K Matrix Switcher](https://nohassleav.com/products/8x8-hdmi-4k-hdr-matrix-switcher-18gbps-ultra-yuv-4-4-4-hdcp2-2-60hz-hdmi-2-0b-doby-atmos-hdtv-routing-selector-spdif-audio-control4-savant-home-automation-switch-ip-rs232).
 
@@ -18,7 +18,7 @@ Requires Home Assistant 2026.10 or newer (Python 3.14). For local installation:
 2. Restart Home Assistant.
 3. Open **Settings → Devices & services → Add integration → Pyxo No Hassle A/V 8x8 HDMI 4K Matrix Switcher**.
 4. Enter a matrix name and choose `udp` or `serial`. Only the selected transport's fields are used.
-5. Name the eight inputs and eight outputs. Leave the unique defaults if desired. Reboot is disabled by default.
+5. Name any inputs and outputs you want. Blank or omitted names use the unique Input 1–8 and Output 1–8 defaults. Reboot is disabled by default.
 6. Add the integration again for each additional matrix.
 
 ### HACS installation
@@ -45,7 +45,7 @@ For serial, pass the physical RS232 adapter through to the Home Assistant host/c
 
 ## Edit names and connection settings
 
-Use the integration entry's **Configure** button to edit all eight input labels, all eight output labels, and the optional reboot button. Input labels must be unique within a matrix, ignoring case, and all labels must contain 1–100 characters. Two inputs both called “Unassigned” should instead be named “Unassigned 7” and “Unassigned 8”.
+Use the integration entry's **Configure** button to edit all eight input labels, all eight output labels, and the optional reboot button. Input labels must be unique within a matrix, ignoring case, and custom labels must contain at most 100 characters. Blank or whitespace-only labels reset that port to its default name. Two inputs both called “Unassigned” should instead be named “Unassigned 7” and “Unassigned 8”.
 
 Use the entry menu's **Reconfigure** action to change its matrix name, IP/hostname, UDP port, serial path, connection type or serial carriage-return option. Changing settings reloads that entry. The config entry ID identifies the matrix; output entity IDs and device IDs remain stable when connection details or labels change. Custom entity names set directly in Home Assistant's entity registry take precedence over configured output labels. Changing an input label changes the option string used in automations, so update affected automations.
 

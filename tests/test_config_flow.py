@@ -104,3 +104,56 @@ async def test_reconfigure_cannot_duplicate(hass, entry):
         DOMAIN, context={"source": "reconfigure", "entry_id": entry.entry_id}, data=dict(other.data)
     )
     assert result["errors"] == {"base": "already_configured"}
+
+
+async def test_partial_names_setup_with_blank_and_omitted_ports(hass):
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": "user"}, data={"name": "Matrix", "host": "192.0.2.1"}
+    )
+    with patch(f"custom_components.{DOMAIN}.async_setup_entry", return_value=True):
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            {
+                "input_1": "Kodi",
+                "input_2": "",
+                "input_3": "  ",
+                "output_1": "Family Room",
+                "output_2": "",
+            },
+        )
+        await hass.async_block_till_done()
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert result["options"]["input_1"] == "Kodi"
+    assert result["options"]["output_1"] == "Family Room"
+    for i in range(2, 9):
+        assert result["options"][f"input_{i}"] == f"Input {i}"
+        assert result["options"][f"output_{i}"] == f"Output {i}"
+
+
+async def test_options_can_clear_names_to_defaults(hass, entry):
+    hass.config_entries.async_update_entry(
+        entry, options=labels({"input_1": "Old source", "output_1": "Old room"})
+    )
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    with patch.object(hass.config_entries, "async_reload", return_value=True):
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"],
+            {"input_1": "", "input_2": "Apple TV", "output_1": "   ", "output_3": "Office"},
+        )
+        await hass.async_block_till_done()
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert entry.options["input_1"] == "Input 1"
+    assert entry.options["input_2"] == "Apple TV"
+    assert entry.options["input_8"] == "Input 8"
+    assert entry.options["output_1"] == "Output 1"
+    assert entry.options["output_3"] == "Office"
+
+
+async def test_optional_names_still_reject_duplicate_custom_names(hass):
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": "user"}, data={"name": "Matrix", "host": "192.0.2.1"}
+    )
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], {"input_1": "Apple TV", "input_2": "apple tv", "input_3": ""}
+    )
+    assert result["errors"] == {"base": "invalid_labels"}
